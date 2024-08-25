@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_views %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+	{% block content %}
+
+	<!-- Начало ЗАВСТАВКИ -->
+	{% block front-slider %}
+	<div class="hero-wrap" style="background-image: url({% static "images/bg_1.jpg" %});">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text d-flex align-itemd-end justify-content-center">
+          <div class="col-md-9 ftco-animate text-center d-flex align-items-end justify-content-center">
+          	<div class="text">
+	            <p class="breadcrumbs mb-2"><span class="mr-2"><a href="{% url "main:index" %}">Home</a></span> <span>Blog</span></p>
+	            <h1 class="mb-4 bread">Blog</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	{% endblock front-slider %}
+	<!-- Конец ЗАВСТАВКИ -->
+	
+	<!-- Начало секции блога -->
+	{% block blog %}
+    
+	<section class="ftco-section">
+      <div class="container">
+        
+        <!-- Блог -->
+        {% include "blog/blog-news.html" %}
+        <!-- Конец блога -->
+
+        <!-- Пагинация -->
+        {% if page_obj.has_other_pages %}
+        <div class="row mt-5">
+          <div class="col text-center"> 
+            <div class="block-27">
+              
+              <ul>
+                {% if page_obj.has_previous %}
+                  <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                {% endif %}
+                {% for p in page_obj.paginator.page_range  %}
+                  {% if page_obj.number == p %}
+                    <li class="active"><span>{{ p }}</span></li>
+                  {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                    <li><a href="?page={{ p }}">{{ p }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                {% endif %}
+              </ul>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- Конец пагинации -->
+
+      </div>
+    </section>
+    {% endblock blog %}
+	<!-- Конец секции блога -->
+
+	{% endblock content %}
+	
+
+
+</html>
